@@ -2,7 +2,7 @@
 Api para guardar resultados de partidas en diversos juegos de palabras
 Esta rama llega hasta terminar los CRUD de Jugador y equipo
 
-##Cambios realizados
+## Cambios realizados
 
 **BASE DE DATOS**
 
