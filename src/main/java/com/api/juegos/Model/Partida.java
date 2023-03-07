@@ -1,31 +1,45 @@
 package com.api.juegos.Model;
 
 import com.api.juegos.Enum.Dificultad;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
-import java.util.Calendar;
+import java.time.LocalDateTime;
+
 
 @Data @AllArgsConstructor @NoArgsConstructor
 @Entity
 public class Partida {
 
-    private String palabra;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Calendar fecha_hora;
+    private Long id;
+
+    private String palabra;
+
+
+    private LocalDateTime fecha_hora;
 
     private Long intentos;
 
     private Long puntos;
 
-    private Long id_jugador;
+    @JsonBackReference
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name="id_jugador")
+    private Jugador jugador;
 
-    private Long id_juego;
+    @JsonBackReference
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name="id_juego")
+    private Juego juego;
 
     @Enumerated(EnumType.STRING)
     @Column(name="Dificultad")

@@ -1,13 +1,19 @@
 package com.api.juegos.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Data @NoArgsConstructor @AllArgsConstructor
 @Builder @Entity
@@ -28,9 +34,14 @@ public class Jugador {
     @JoinColumn(name="id_equipo")
     private Equipo equipo = null;
 
-    private Long puntos;
+    private Long puntos = 0L;
 
     private Boolean admin;
 
     private String clave;
+
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "jugador")
+    private Set<Partida> partidas;
 }

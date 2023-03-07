@@ -36,12 +36,12 @@ public class JugadorController {
      */
     @GetMapping("/jugadores")
     public ResponseEntity<List<?>> getAllPlayers(){
-        List<Jugador> beers = jugadorRepositorio.findAll();
-        if(beers.isEmpty()) {
+        List<Jugador> players = jugadorRepositorio.findAll();
+        if(players.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {
             List<JugadorDTO> dtoList =
-                    beers.stream().map(jugadorDTOConverter::convertToDTO).collect(Collectors.toList());
+                    players.stream().map(jugadorDTOConverter::convertToDTO).collect(Collectors.toList());
             return ResponseEntity.ok(dtoList);
         }
     }
@@ -88,7 +88,7 @@ public class JugadorController {
      *
      * @param nuevo
      * @param id
-     * @return cerveza actualizada, 404 si no se encuentra el jugador
+     * @return jugador actualizado, 404 si no se encuentra el jugador
      */
     @PutMapping("/jugador/{id}")
     public Jugador updatePlayer(@RequestBody ModJugadorDTO nuevo, @PathVariable Long id) {
