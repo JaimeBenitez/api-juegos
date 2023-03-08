@@ -28,7 +28,7 @@ Nuevos datos
 
 - Mejorados los endpoints del método POST de los diversos CRUD, ahora son en singular, lo que tiene mas sentido
 
-- Ahora el POST de partida realiza un calculo de puntos (Longitud de palabra * 10)/intentos realizados) y saca la palabra a jugar del fichero
+- Ahora el POST de partida realiza un calculo de puntos **(Longitud de palabra * 10)/intentos realizados** y saca la palabra a jugar del fichero
 
 - Añadida relación de equipo OneToMany con jugador, de manera que ahora se puede obtener la lista de jugadores en un equipo en el siguiente endpoint:
 
