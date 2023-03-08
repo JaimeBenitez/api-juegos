@@ -6,9 +6,8 @@ import com.api.juegos.Model.Jugador;
 import com.api.juegos.Repositories.EquipoRepositorio;
 import com.api.juegos.Repositories.JugadorRepositorio;
 
-import com.api.juegos.dto.CrearJugadorDTO;
-import com.api.juegos.dto.JugadorDTO;
-import com.api.juegos.dto.ModJugadorDTO;
+import com.api.juegos.dto.*;
+import com.api.juegos.dto.converter.JugadorClasificacionDTOConverter;
 import com.api.juegos.dto.converter.JugadorDTOConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +26,8 @@ public class JugadorController {
     private final JugadorDTOConverter jugadorDTOConverter;
 
     private final EquipoRepositorio equipoRepositorio;
+
+    private final JugadorClasificacionDTOConverter jugadorClasificacionDTOConverter;
 
 
     /**
@@ -60,12 +61,31 @@ public class JugadorController {
     }
 
     /**
+     * Obtenemos la clasificacion de jugadores segun sus puntos
+     *
+     *
+     * @return la lista de jugadores
+     */
+    @GetMapping("/jugadores/clasificacion")
+    public ResponseEntity<List<?>> getTeamLeaderBoard(){
+        List<Jugador> jugadores = jugadorRepositorio.findByOrderByPuntosDesc();
+
+        if(jugadores.isEmpty()){
+            return ResponseEntity.noContent().build();
+        } else {
+            List<ClasificacionJugadorDTO> dtoList =
+                    jugadores.stream().map(jugadorClasificacionDTOConverter::convertToDTO).collect(Collectors.toList());
+            return ResponseEntity.ok(dtoList);
+        }
+
+    }
+    /**
      * Creamos un nuevo jugador
      *
      * @param nuevo
      * @return jugador insertado
      */
-    @PostMapping("/jugadores")
+    @PostMapping("/jugador")
     public ResponseEntity<?> newPlayer(@RequestBody CrearJugadorDTO nuevo){
         Jugador nJugador = new Jugador();
         Equipo equipo = null;

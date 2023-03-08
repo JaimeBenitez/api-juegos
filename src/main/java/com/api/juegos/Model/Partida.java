@@ -3,17 +3,19 @@ package com.api.juegos.Model;
 import com.api.juegos.Enum.Dificultad;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
+
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 
 @Data @AllArgsConstructor @NoArgsConstructor
+@Builder
 @Entity
+
 public class Partida {
 
     @Id
@@ -31,13 +33,11 @@ public class Partida {
 
     @JsonBackReference
     @ManyToOne
-    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name="id_jugador")
     private Jugador jugador;
 
     @JsonBackReference
     @ManyToOne
-    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name="id_juego")
     private Juego juego;
 
