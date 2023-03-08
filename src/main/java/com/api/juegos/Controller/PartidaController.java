@@ -9,6 +9,7 @@ import com.api.juegos.Model.Partida;
 import com.api.juegos.Repositories.JuegoRepositorio;
 import com.api.juegos.Repositories.JugadorRepositorio;
 import com.api.juegos.Repositories.PartidaRepositorio;
+import com.api.juegos.Servicios.PalabraServicio;
 import com.api.juegos.dto.*;
 import com.api.juegos.dto.converter.PartidaDTOConverter;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,8 @@ public class PartidaController {
     private final JuegoRepositorio juegoRepositorio;
 
     private final PartidaDTOConverter partidaDTOConverter;
+
+    private final PalabraServicio palabraServicio;
 
 
     /**
@@ -105,13 +108,16 @@ public class PartidaController {
      * @return jugador insertado
      */
     @PostMapping("/partida")
-    public ResponseEntity<?> newPlay(@RequestBody CrearPartidaDTO nuevo){
-        Long tamanioPalabra = (long) nuevo.getPalabra().length();
+    public ResponseEntity<?> newPlay(@RequestBody CrearPartidaDTO nuevo) throws Exception{
+        List<String> palabras = palabraServicio.cargarLista();
+        List<String> resultadoPalabra = palabraServicio.palabrasRandom(palabras,1L);
+        String palabra = resultadoPalabra.get(0);
+        Long tamanioPalabra = (long) palabra.length();
         System.out.println(tamanioPalabra);
         Jugador jugador = jugadorRepositorio.findById(nuevo.getJugadorId()).orElseThrow(()-> new JugadorNotFoundException(nuevo.getJugadorId()));
         Juego juego = juegoRepositorio.findById(nuevo.getJuegoId()).orElseThrow(()-> new JuegoNotFoundException(nuevo.getJuegoId()));
         Partida nPartida = new Partida();
-        nPartida.setPalabra(nuevo.getPalabra());
+        nPartida.setPalabra(palabra);
         nPartida.setFecha_hora(LocalDateTime.now());
         nPartida.setIntentos(nuevo.getIntentos());
         nPartida.setPuntos((tamanioPalabra * 10) / nuevo.getIntentos());

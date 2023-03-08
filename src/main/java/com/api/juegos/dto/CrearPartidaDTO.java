@@ -14,9 +14,6 @@ public class CrearPartidaDTO {
 
     private Long juegoId;
 
-
-    private String palabra;
-
     private String dificultad;
 
     private Long intentos;
